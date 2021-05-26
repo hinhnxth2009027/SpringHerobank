@@ -9,7 +9,7 @@ namespace SpringHeroBank.service
     public class Service
     {
         private ConnectionHelper conn = new ConnectionHelper();
-        public User receiver(string receiverCode)
+        public Acount receiver(string receiverCode)
         {
             MySqlConnection connection = conn.Connection();
             MySqlCommand cmd = new MySqlCommand();
@@ -21,7 +21,7 @@ namespace SpringHeroBank.service
                 MySqlDataReader result = cmd.ExecuteReader();
                 if (result.HasRows)
                 {
-                    User user = null;
+                    Acount user = null;
                     while (result.Read())
                     {
                         var userName = result["userName"].ToString();
@@ -34,7 +34,7 @@ namespace SpringHeroBank.service
                         var birthday = result["birthday"].ToString();
                         var createdAt = DateTime.Parse(result["createdAt"].ToString());
                         var updatedAt = DateTime.Parse(result["updatedAt"].ToString());
-                        user = new User(userName, email, password, salT, phoneNumber, cardNumber1, birthday, createdAt, updatedAt);
+                        user = new Acount(userName, email, password, salT, phoneNumber, cardNumber1, birthday, createdAt, updatedAt);
                     }
                     result.Close();
                     return user;

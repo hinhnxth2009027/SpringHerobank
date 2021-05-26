@@ -7,7 +7,7 @@ namespace SpringHeroBank.view
 {
     public class ApplicationMenu
     {
-        public User UserLogin = null;
+        public Acount userLogin = null;
 
         public void menu()
         {
@@ -17,7 +17,7 @@ namespace SpringHeroBank.view
             int choice;
             while (true)
             {
-                if (UserLogin == null)
+                if (userLogin == null)
                 {
                     Console.WriteLine("\n\n||============|| Spring Hero Bank ||============||");
                     Console.WriteLine("||  Chọn 1 để login                             ||");
@@ -32,7 +32,7 @@ namespace SpringHeroBank.view
                         switch (choice)
                         {
                             case 1:
-                                UserLogin = guestController.login();
+                                userLogin = guestController.login();
                                 break;
                             case 2:
                                 guestController.createNewUser();
@@ -55,7 +55,7 @@ namespace SpringHeroBank.view
                 else
                 {
                     Console.WriteLine(
-                        $"=====|| Spring Hero Bank ||===|| User : {UserLogin.userName} ||===|| Balance : ${UserLogin.balance} ||===|| phone : {UserLogin.phoneNumber} ||===|| Card number : {UserLogin.cardNumber} ||=====\n");
+                        $"=====|| Spring Hero Bank ||===|| User : {userLogin.userName} ||===|| Balance : ${userLogin.balance} ||===|| phone : {userLogin.phoneNumber} ||===|| Card number : {userLogin.cardNumber} ||=====\n");
                     Console.WriteLine("||==================|| MENU ||==================||");
                     Console.WriteLine("|| Chọn 1 để nạp thêm tiền vào tài khoản        ||");
                     Console.WriteLine("|| Chọn 2 để rút tiền từ tài khoản              ||");
@@ -73,24 +73,24 @@ namespace SpringHeroBank.view
                         switch (choice)
                         {
                             case 1:
-                                UserLogin = acountController.recharge(UserLogin);
+                                userLogin = acountController.recharge(userLogin);
                                 break;
                             case 2:
-                                UserLogin = acountController.Withdrawal(UserLogin);
+                                userLogin = acountController.Withdrawal(userLogin);
                                 break;
                             case 3:
-                                UserLogin = acountController.transfer(UserLogin);
+                                userLogin = acountController.transfer(userLogin);
                                 break;
                             case 4:
-                                acountController.TransactionHistory(UserLogin.cardNumber);
+                                acountController.TransactionHistory(userLogin.cardNumber);
                                 break;
                             case 5:
                                 Console.WriteLine("\n");
-                                Console.WriteLine(UserLogin.ToString());
+                                Console.WriteLine(userLogin.ToString());
                                 Console.WriteLine("\n");
                                 break;
                             case 6:
-                                UserLogin = null;
+                                userLogin = null;
                                 break;
                         }
                     }

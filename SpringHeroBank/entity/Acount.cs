@@ -3,7 +3,7 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace SpringHeroBank.entity
 {
-    public class User
+    public class Acount
     {
         //tài khoản
         public int id { get; set; }
@@ -23,7 +23,7 @@ namespace SpringHeroBank.entity
         public DateTime updatedAt { get; set; }
         public DateTime deletedAt { get; set; }
         //constructor create user
-        public User(string userName, string email, string password, string salt, string phoneNumber, string cardNumber, string birthDay, DateTime createdAt, DateTime updatedAt)
+        public Acount(string userName, string email, string password, string salt, string phoneNumber, string cardNumber, string birthDay, DateTime createdAt, DateTime updatedAt)
         {
             this.userName = userName;
             this.email = email;

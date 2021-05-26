@@ -97,8 +97,8 @@
     <ItemGroup>
         <Compile Include="controller\AcountController.cs" />
         <Compile Include="controller\GuestController.cs" />
-        <Compile Include="entity\DealHistory.cs" />
-        <Compile Include="entity\User.cs" />
+        <Compile Include="entity\TransactionHistory.cs" />
+        <Compile Include="entity\Acount.cs" />
         <Compile Include="helper\ConnectionHelper.cs" />
         <Compile Include="model\AcountModel.cs" />
         <Compile Include="Program.cs" />

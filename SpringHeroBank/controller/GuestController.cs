@@ -11,7 +11,7 @@ namespace SpringHeroBank.controller
         static Random random = new Random();
         private AcountModel _acountModel = new AcountModel();
         private Service _service = new Service();
-        private User isLogin = null;
+        private Acount isLogin = null;
         
         public void createNewUser()
         {
@@ -32,11 +32,11 @@ namespace SpringHeroBank.controller
             var cardNumber = random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString();
             DateTime createdAt = DateTime.Now;
             DateTime updatedAt = DateTime.Now;
-            User newUser = new User(userName, email, password, salt, phoneNumber, cardNumber, birthDay, createdAt, updatedAt);
+            Acount newUser = new Acount(userName, email, password, salt, phoneNumber, cardNumber, birthDay, createdAt, updatedAt);
             // Console.WriteLine(newUser.ToString());
             _acountModel.store(newUser);
         }
-        public User login()
+        public Acount login()
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine("Vui lòng nhập vào email hoặc mã thẻ");

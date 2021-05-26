@@ -11,7 +11,7 @@ namespace SpringHeroBank.controller
     {
         private AcountModel _acountModel = new AcountModel();
         private Service _service = new Service();
-        public User recharge(User user)
+        public Acount recharge(Acount user)
         {
             Console.WriteLine("Nhập vào số tiền bạn muốn nạp");
             double money = Double.Parse(Console.ReadLine());
@@ -29,7 +29,7 @@ namespace SpringHeroBank.controller
                 return user;
             }
         }
-        public User Withdrawal(User user)
+        public Acount Withdrawal(Acount user)
         {
             Console.WriteLine("Nhập vào số tiền bạn muốn rút");
             double money = Double.Parse(Console.ReadLine());
@@ -54,11 +54,11 @@ namespace SpringHeroBank.controller
                 }
             }
         }
-        public User transfer(User user)
+        public Acount transfer(Acount user)
         {
             Console.WriteLine("Nhập vào mã người nhận");
             string recipientCode = Console.ReadLine();
-            User checkUser = _service.receiver(recipientCode);
+            Acount checkUser = _service.receiver(recipientCode);
             if (checkUser == null)
             {
                 Console.WriteLine($"\nKhông tìm thấy người dùng nào với mã thẻ : {recipientCode} !\n");
@@ -89,7 +89,7 @@ namespace SpringHeroBank.controller
                     }
                     else
                     {
-                        User userr = _acountModel.transfer(user.cardNumber, checkUser.cardNumber, money);
+                        Acount userr = _acountModel.transfer(user.cardNumber, checkUser.cardNumber, money);
                         if (userr != null)
                         {
                             return userr;
@@ -109,7 +109,22 @@ namespace SpringHeroBank.controller
         }
         public void TransactionHistory(string cardNumber)
         {
-            _acountModel.TransactionList(cardNumber);
+            List<entity.TransactionHistory> transactionHistories = _acountModel.TransactionList(cardNumber);
+            if (transactionHistories.Count == 0)
+            {
+                Console.WriteLine("\n===========================");
+                Console.WriteLine("Bạn chưa có giao dịch nào");
+                Console.WriteLine("===========================\n");
+            }
+            else
+            {
+                Console.WriteLine("\n===========================================================================================================================================================");
+                foreach (TransactionHistory User in transactionHistories)
+                {
+                    Console.WriteLine(User.ToString());
+                }
+                Console.WriteLine("===========================================================================================================================================================\n");
+            }
         }
     }
 }

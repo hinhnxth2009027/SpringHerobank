@@ -13,10 +13,10 @@ namespace SpringHeroBank.model
     {
         private ConnectionHelper conn = new ConnectionHelper();
         private Service _service = new Service();
-        private User _user = null;
+        private Acount _user = null;
         private Boolean islogin = false;
 
-        public void store(User user)
+        public void store(Acount user)
         {
             MySqlConnection connection = conn.Connection();
             MySqlCommand cmd = new MySqlCommand();
@@ -44,7 +44,7 @@ namespace SpringHeroBank.model
             }
         }
 
-        public User login(string acount, string pass)
+        public Acount login(string acount, string pass)
         {
             MySqlConnection connection = conn.Connection();
             MySqlCommand cmd = new MySqlCommand();
@@ -77,7 +77,7 @@ namespace SpringHeroBank.model
                                 var birthday = userData["birthday"].ToString();
                                 var createdAt = DateTime.Parse(userData["createdAt"].ToString());
                                 var updatedAt = DateTime.Parse(userData["updatedAt"].ToString());
-                                this._user = new User(userName, email, password, salT, phoneNumber, cardNumber,
+                                this._user = new Acount(userName, email, password, salT, phoneNumber, cardNumber,
                                     birthday, createdAt, updatedAt);
                                 this._user.balance = balance;
                                 userData.Close();
@@ -129,7 +129,7 @@ namespace SpringHeroBank.model
                                     var birthday = userData["birthday"].ToString();
                                     var createdAt = DateTime.Parse(userData["createdAt"].ToString());
                                     var updatedAt = DateTime.Parse(userData["updatedAt"].ToString());
-                                    this._user = new User(userName, email, password, salT, phoneNumber, cardNumber,
+                                    this._user = new Acount(userName, email, password, salT, phoneNumber, cardNumber,
                                         birthday, createdAt, updatedAt);
                                     this._user.balance = balance;
                                     userData.Close();
@@ -168,7 +168,7 @@ namespace SpringHeroBank.model
             return null;
         }
 
-        public User recharge(string cardNumber, double money)
+        public Acount recharge(string cardNumber, double money)
         {
             double new_balane = 0;
             MySqlConnection connection = conn.Connection();
@@ -201,7 +201,7 @@ namespace SpringHeroBank.model
                     var createdAt = DateTime.Parse(result2["createdAt"].ToString());
                     var updatedAt = DateTime.Parse(result2["updatedAt"].ToString());
 
-                    this._user = new User(userName, email, password, salT, phoneNumber, cardNumber1, birthday,
+                    this._user = new Acount(userName, email, password, salT, phoneNumber, cardNumber1, birthday,
                         createdAt, updatedAt);
                     this._user.balance = balance;
                     Console.WriteLine("\nNạp tiền thành công\n");
@@ -209,11 +209,12 @@ namespace SpringHeroBank.model
 
                 result2.Close();
                 cmd.CommandText =
-                    $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent) VALUES (?cardUser,?time,?status,?TransactionContent)";
+                    $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent,transactionType) VALUES (?cardUser,?time,?status,?TransactionContent,?transactionType)";
                 cmd.Parameters.Add("?cardUser", MySqlDbType.VarChar).Value = cardNumber;
                 cmd.Parameters.Add("?time", MySqlDbType.VarChar).Value = DateTime.Now.ToString();
                 cmd.Parameters.Add("?status", MySqlDbType.Int64).Value = 1;
                 cmd.Parameters.Add("?TransactionContent", MySqlDbType.VarChar).Value = $"Đã nạp ${money} vào tài khoản";
+                cmd.Parameters.Add("?transactionType", MySqlDbType.VarChar).Value = "recharge";
                 cmd.ExecuteNonQuery();
                 return this._user;
             }
@@ -224,7 +225,7 @@ namespace SpringHeroBank.model
             }
         }
 
-        public User Withdrawal(string cardNumber, double money)
+        public Acount Withdrawal(string cardNumber, double money)
         {
             double new_balane = 0;
             MySqlConnection connection = conn.Connection();
@@ -256,7 +257,7 @@ namespace SpringHeroBank.model
                     var birthday = result2["birthday"].ToString();
                     var createdAt = DateTime.Parse(result2["createdAt"].ToString());
                     var updatedAt = DateTime.Parse(result2["updatedAt"].ToString());
-                    this._user = new User(userName, email, password, salT, phoneNumber, cardNumber1,
+                    this._user = new Acount(userName, email, password, salT, phoneNumber, cardNumber1,
                         birthday, createdAt, updatedAt);
                     this._user.balance = balance;
                     Console.WriteLine("\nRút tiền thành công\n");
@@ -264,11 +265,12 @@ namespace SpringHeroBank.model
 
                 result2.Close();
                 cmd.CommandText =
-                    $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent) VALUES (?cardUser,?time,?status,?TransactionContent)";
+                    $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent,transactionType) VALUES (?cardUser,?time,?status,?TransactionContent,?transactionType)";
                 cmd.Parameters.Add("?cardUser", MySqlDbType.VarChar).Value = cardNumber;
                 cmd.Parameters.Add("?time", MySqlDbType.VarChar).Value = DateTime.Now.ToString();
                 cmd.Parameters.Add("?status", MySqlDbType.Int64).Value = 1;
                 cmd.Parameters.Add("?TransactionContent", MySqlDbType.VarChar).Value = $"Đã rút ${money} từ tài khoản";
+                cmd.Parameters.Add("?transactionType", MySqlDbType.VarChar).Value = "Withdrawal";
                 cmd.ExecuteNonQuery();
                 return this._user;
             }
@@ -280,7 +282,7 @@ namespace SpringHeroBank.model
         }
 
 
-        public User transfer(string senderCode, string recipientCode, double money)
+        public Acount transfer(string senderCode, string recipientCode, double money)
         {
             double new_balane_sender = 0;
             double new_balane_recipient = 0;
@@ -334,42 +336,44 @@ namespace SpringHeroBank.model
                         var birthday = result3["birthday"].ToString();
                         var createdAt = DateTime.Parse(result3["createdAt"].ToString());
                         var updatedAt = DateTime.Parse(result3["updatedAt"].ToString());
-                        this._user = new User(userName, email, password, salT, phoneNumber, cardNumber1,
+                        this._user = new Acount(userName, email, password, salT, phoneNumber, cardNumber1,
                             birthday, createdAt, updatedAt);
                         this._user.balance = balance;
                     }
 
                     result3.Close();
                     cmd.CommandText =
-                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent) VALUES (?cardUser,?time,?status,?TransactionContent)";
+                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent,transactionType) VALUES (?cardUser,?time,?status,?TransactionContent,?transactionType)";
                     cmd.Parameters.Add("?cardUser", MySqlDbType.VarChar).Value = senderCode;
                     cmd.Parameters.Add("?time", MySqlDbType.VarChar).Value = DateTime.Now.ToString();
                     cmd.Parameters.Add("?status", MySqlDbType.Int64).Value = 1;
-                    cmd.Parameters.Add("?TransactionContent", MySqlDbType.VarChar).Value =
-                        $"Đã chuyển tới {recipientCode} ${money}";
+                    cmd.Parameters.Add("?TransactionContent", MySqlDbType.VarChar).Value = $"Đã chuyển tới {recipientCode} ${money}";
+                    cmd.Parameters.Add("?transactionType", MySqlDbType.VarChar).Value = $"transfer";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText =
-                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent) VALUES (?cardUser1,?time1,?status1,?TransactionContent1)";
+                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent,transactionType) VALUES (?cardUser1,?time1,?status1,?TransactionContent1,?transactionType1)";
                     cmd.Parameters.Add("?cardUser1", MySqlDbType.VarChar).Value = recipientCode;
                     cmd.Parameters.Add("?time1", MySqlDbType.VarChar).Value = DateTime.Now.ToString();
                     cmd.Parameters.Add("?status1", MySqlDbType.Int64).Value = 1;
-                    cmd.Parameters.Add("?TransactionContent1", MySqlDbType.VarChar).Value =
-                        $"Đã nhận được ${money} từ {senderCode}";
+                    cmd.Parameters.Add("?TransactionContent1", MySqlDbType.VarChar).Value = $"Đã nhận được ${money} từ {senderCode}";
+                    cmd.Parameters.Add("?transactionType1", MySqlDbType.VarChar).Value = $"transfer";
                     cmd.ExecuteNonQuery();
                     Console.WriteLine("Chuyển khoản thành công");
                 }
                 else
                 {
                     cmd.CommandText =
-                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent) VALUES (?cardUser,?time,?status,?TransactionContent)";
+                        $"INSERT INTO transactionhistory(cardUser,time,status,TransactionContent,transactionType) VALUES (?cardUser,?time,?status,?TransactionContent,?transactionType)";
                     cmd.Parameters.Add("?cardUser", MySqlDbType.VarChar).Value = senderCode;
                     cmd.Parameters.Add("?time", MySqlDbType.VarChar).Value = DateTime.Now.ToString();
                     cmd.Parameters.Add("?status", MySqlDbType.Int64).Value = 0;
                     cmd.Parameters.Add("?TransactionContent", MySqlDbType.VarChar).Value = $"Chuyển tới {recipientCode} ${money}";
+                    cmd.Parameters.Add("?transactionType", MySqlDbType.VarChar).Value = $"transfer";
                     cmd.ExecuteNonQuery();
                     Console.WriteLine("Đã hủy giao dịch\n");
                     this._user = null;
                 }
+
                 transaction.Commit();
                 return this._user;
             }
@@ -382,18 +386,18 @@ namespace SpringHeroBank.model
         }
 
 
-        public void TransactionList(string cardNumber)
+        public List<TransactionHistory> TransactionList(string cardNumber)
         {
+            List<TransactionHistory> transactionHistories = new List<TransactionHistory>();
+
             MySqlConnection connection = conn.Connection();
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = connection;
             cmd.CommandText = $"SELECT * from transactionhistory WHERE cardUser = '{cardNumber}'";
             MySqlDataReader result = cmd.ExecuteReader();
-            List<DealHistory> dealHistories = new List<DealHistory>();
+            List<TransactionHistory> dealHistories = new List<TransactionHistory>();
             if (result.HasRows)
             {
-                Console.WriteLine(
-                    $"===================================================================================================================");
                 while (result.Read())
                 {
                     int status = int.Parse(result["status"].ToString());
@@ -407,19 +411,16 @@ namespace SpringHeroBank.model
                         statusTXT = "Đã hủy giao dịch";
                     }
 
-                    Console.WriteLine(
-                        $" {result["time"]} \t||\t {statusTXT} \t||\t {result["TransactionContent"]}");
+                    var time = result["time"].ToString();
+                    var cardUser = result["cardUser"].ToString();
+                    var TransactionContent = result["TransactionContent"].ToString();
+                    var transactionType = result["transactionType"].ToString();
+                    TransactionHistory transactionHistory = new TransactionHistory(time,transactionType,statusTXT,TransactionContent,cardUser);
+                    transactionHistories.Add(transactionHistory);
                 }
-
-                Console.WriteLine(
-                    $"===================================================================================================================\n");
             }
-            else
-            {
-                Console.WriteLine("Bạn chưa có giao dịch nào\n");
-            }
-
             result.Close();
+            return transactionHistories;
         }
     }
 }
