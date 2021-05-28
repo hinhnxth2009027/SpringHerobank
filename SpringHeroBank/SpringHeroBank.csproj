@@ -95,15 +95,18 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="controller\AcountController.cs" />
+        <Compile Include="controller\AccountController.cs" />
         <Compile Include="controller\GuestController.cs" />
-        <Compile Include="entity\TransactionHistory.cs" />
-        <Compile Include="entity\Acount.cs" />
+        <Compile Include="entity\Account.cs" />
+        <Compile Include="entity\Transaction.cs" />
         <Compile Include="helper\ConnectionHelper.cs" />
-        <Compile Include="model\AcountModel.cs" />
+        <Compile Include="helper\MD5Helper.cs" />
+        <Compile Include="model\AccountModel.cs" />
+        <Compile Include="model\TransactionModel.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="service\Service.cs" />
+        <Compile Include="service\AccountService.cs" />
+        <Compile Include="service\TransactionService.cs" />
         <Compile Include="view\ApplicationMenu.cs" />
     </ItemGroup>
     <ItemGroup>

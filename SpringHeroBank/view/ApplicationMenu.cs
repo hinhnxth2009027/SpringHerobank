@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Text;
-using SpringHeroBank.controller;
-using SpringHeroBank.entity;
+using SpringHeroBank2.controller;
+using SpringHeroBank2.entity;
+using SpringHeroBank2.service;
 
-namespace SpringHeroBank.view
+namespace SpringHeroBank2.view
 {
     public class ApplicationMenu
     {
-        public Acount userLogin = null;
-
-        public void menu()
+        public void ShowMenu()
         {
-            GuestController guestController = new GuestController();
-            AcountController acountController = new AcountController();
             Console.OutputEncoding = Encoding.UTF8;
-            int choice;
+            var accountController = new AccountController();
+            var guestController = new GuestController();
+            Account accountLogin = null;
+
             while (true)
             {
-                if (userLogin == null)
+                int choice;
+                if (accountLogin == null)
                 {
                     Console.WriteLine("\n\n||============|| Spring Hero Bank ||============||");
                     Console.WriteLine("||  Chọn 1 để login                             ||");
@@ -32,10 +33,10 @@ namespace SpringHeroBank.view
                         switch (choice)
                         {
                             case 1:
-                                userLogin = guestController.login();
+                                accountLogin = guestController.LoginController();
                                 break;
                             case 2:
-                                guestController.createNewUser();
+                                guestController.CreateAccountController();
                                 break;
                             case 3:
                                 Console.WriteLine("bye bye !!!");
@@ -55,7 +56,7 @@ namespace SpringHeroBank.view
                 else
                 {
                     Console.WriteLine(
-                        $"=====|| Spring Hero Bank ||===|| User : {userLogin.userName} ||===|| Balance : ${userLogin.balance} ||===|| phone : {userLogin.phoneNumber} ||===|| Card number : {userLogin.cardNumber} ||=====\n");
+                        $"=====|| Spring Hero Bank ||===|| User : {accountLogin.FullName} ||===|| Balance : ${accountLogin.Balance} ||===|| phone : {accountLogin.Phone} ||===|| Card number : {accountLogin.AccountNumber} ||=====\n");
                     Console.WriteLine("||==================|| MENU ||==================||");
                     Console.WriteLine("|| Chọn 1 để nạp thêm tiền vào tài khoản        ||");
                     Console.WriteLine("|| Chọn 2 để rút tiền từ tài khoản              ||");
@@ -66,31 +67,27 @@ namespace SpringHeroBank.view
                     Console.WriteLine("||==============================================||\n");
                     Console.WriteLine("\nLựa chọn của bạn là");
                     choice = int.Parse(Console.ReadLine());
-
-
                     if (choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5 || choice == 6)
                     {
                         switch (choice)
                         {
                             case 1:
-                                userLogin = acountController.recharge(userLogin);
+                                accountLogin = accountController.Recharge(accountLogin);
                                 break;
                             case 2:
-                                userLogin = acountController.Withdrawal(userLogin);
+                                accountLogin = accountController.Withdrawal(accountLogin);
                                 break;
                             case 3:
-                                userLogin = acountController.transfer(userLogin);
+                                accountLogin = accountController.Transfer(accountLogin);
                                 break;
                             case 4:
-                                acountController.TransactionHistory(userLogin.cardNumber);
+                                accountController.ShowTransactionHistory(accountLogin);
                                 break;
                             case 5:
-                                Console.WriteLine("\n");
-                                Console.WriteLine(userLogin.ToString());
-                                Console.WriteLine("\n");
+                                accountController.ShowInformation(accountLogin);
                                 break;
                             case 6:
-                                userLogin = null;
+                                accountLogin = null;
                                 break;
                         }
                     }

@@ -1,56 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
-using SpringHeroBank.entity;
-using SpringHeroBank.model;
-using SpringHeroBank.service;
+using SpringHeroBank2.entity;
+using SpringHeroBank2.model;
+using SpringHeroBank2.service;
 
-namespace SpringHeroBank.controller
+namespace SpringHeroBank2.controller
 {
     public class GuestController
     {
-        static Random random = new Random();
-        private AcountModel _acountModel = new AcountModel();
-        private Service _service = new Service();
-        private Acount isLogin = null;
-        
-        public void createNewUser()
-        {
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("Vui lòng nhập tên đầy đủ");
-            var userName = Console.ReadLine();
-            var salt = random.Next(100000000, 900000000).ToString();
-            Console.WriteLine("Vui lòng nhập email");
-            var email = Console.ReadLine();
-            Console.WriteLine("Nhập vào password");
-            var pass_before_hash = Console.ReadLine();
-            var password = _service.HashPassword(pass_before_hash, salt);
-            // Console.WriteLine("Mật khẩu được mã hóa thành : " + password);
-            Console.WriteLine("Nhập vào số điện thoại");
-            var phoneNumber = Console.ReadLine();
-            Console.WriteLine("Nhập vào ngày tháng năm sinh");
-            var birthDay = Console.ReadLine();
-            var cardNumber = random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString() + random.Next(1000, 9000).ToString();
-            DateTime createdAt = DateTime.Now;
-            DateTime updatedAt = DateTime.Now;
-            Acount newUser = new Acount(userName, email, password, salt, phoneNumber, cardNumber, birthDay, createdAt, updatedAt);
-            // Console.WriteLine(newUser.ToString());
-            _acountModel.store(newUser);
-        }
-        public Acount login()
-        {
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.WriteLine("Vui lòng nhập vào email hoặc mã thẻ");
-            var acount = Console.ReadLine();
-            Console.WriteLine("Vui lòng nhập password");
-            var password = Console.ReadLine(); 
-            isLogin = _acountModel.login(acount, password);
-            if (isLogin!=null)
-            {
-                // Console.WriteLine(isLogin.ToString());
-                return isLogin;
-            }
+        private AccountService acountService = new AccountService();
+        private AccountModel _accountModel = new AccountModel();
 
-            return null;
+
+        public void CreateAccountController()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+
+            var _account = new Account();
+            Console.WriteLine("Nhập đầy đủ họ tên:");
+            _account.FullName = Console.ReadLine();
+            Console.WriteLine("Nhập vào Email:");
+            _account.Email = Console.ReadLine();
+            Console.WriteLine("Nhập vào Số điện thoại:");
+            _account.Phone = Console.ReadLine();
+            Console.WriteLine("Nhập vào password:");
+            _account.Password = Console.ReadLine();
+            Console.WriteLine("Nhập vào ngày tháng năm sinh theo định dạng ( ngày-tháng-năm ):");
+            _account.BirthDay = Console.ReadLine();
+            //truyền các giá trị người dùng đã nhập vào service để tiếp tục sử lý đăng kí
+            acountService.CreateAccountService(_account);
+        }
+
+
+        public Account LoginController()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("\nVui lòng nhập vào Email hoặc mã số tài khoản");
+            var account = Console.ReadLine();
+            Console.WriteLine("\nNhập vào mật khẩu");
+            var password = Console.ReadLine();
+            var accountIsLogin = _accountModel.Login(account, password);
+            return accountIsLogin;
         }
     }
 }
