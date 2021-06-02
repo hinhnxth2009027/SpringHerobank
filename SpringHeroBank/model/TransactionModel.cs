@@ -24,10 +24,9 @@ namespace SpringHeroBank2.model
                 cmd.CommandText = $"UPDATE accounts SET balance = {newMoney} WHERE AccountNumber = '{accountNumber}'";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText =
-                    $"INSERT into TransactionHistory(ID,Amount,Code,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@Code,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
+                    $"INSERT into TransactionHistory(ID,Amount,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
                 cmd.Parameters.AddWithValue("@ID", new TransactionService().GenerateRandomNumbers());
                 cmd.Parameters.AddWithValue("@Amount", money);
-                cmd.Parameters.AddWithValue("@Code", accountNumber);
                 cmd.Parameters.AddWithValue("@SenderCode", accountNumber);
                 cmd.Parameters.AddWithValue("@ReceiverCode", accountNumber);
                 cmd.Parameters.AddWithValue("@Type", 2);
@@ -76,10 +75,9 @@ namespace SpringHeroBank2.model
                 cmd.CommandText = $"UPDATE accounts SET balance = {newMoney} WHERE AccountNumber = '{accountNumber}'";
                 cmd.ExecuteNonQuery();
                 cmd.CommandText =
-                    $"INSERT into TransactionHistory(ID,Amount,Code,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@Code,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
+                    $"INSERT into TransactionHistory(ID,Amount,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
                 cmd.Parameters.AddWithValue("@ID", new TransactionService().GenerateRandomNumbers());
                 cmd.Parameters.AddWithValue("@Amount", money);
-                cmd.Parameters.AddWithValue("@Code", accountNumber);
                 cmd.Parameters.AddWithValue("@SenderCode", accountNumber);
                 cmd.Parameters.AddWithValue("@ReceiverCode", accountNumber);
                 cmd.Parameters.AddWithValue("@Type", 1);
@@ -176,34 +174,17 @@ namespace SpringHeroBank2.model
                         UpdatedAt = DateTime.Parse(result3["UpdatedAt"].ToString())
                     };
                 }
-
                 result3.Close();
-                //lưu thông tin cho bên người gửi
                 cmd.CommandText =
-                    $"INSERT into TransactionHistory(ID,Amount,Code,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@Code,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
+                    $"INSERT into TransactionHistory(ID,Amount,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID,@Amount,@SenderCode,@ReceiverCode,@Type,@Message,@CreateAt,@UpdateAt)";
                 cmd.Parameters.AddWithValue("@ID", new TransactionService().GenerateRandomNumbers());
                 cmd.Parameters.AddWithValue("@Amount", money);
-                cmd.Parameters.AddWithValue("@Code", senderCode);
                 cmd.Parameters.AddWithValue("@SenderCode", senderCode);
                 cmd.Parameters.AddWithValue("@ReceiverCode", recipientCode);
                 cmd.Parameters.AddWithValue("@Type", 3);
                 cmd.Parameters.AddWithValue("@Message", $"{message}");
                 cmd.Parameters.AddWithValue("@CreateAt", DateTime.Now);
                 cmd.Parameters.AddWithValue("@UpdateAt", DateTime.Now);
-                cmd.ExecuteNonQuery();
-                
-                //lưu thông tin cho bên người nhận
-                cmd.CommandText =
-                    $"INSERT into TransactionHistory(ID,Amount,Code,SenderCode,ReceiverCode,Type,Message,CreateAt,UpdateAt) VALUES (@ID1,@Amount1,@Code1,@SenderCode1,@ReceiverCode1,@Type1,@Message1,@CreateAt1,@UpdateAt1)";
-                cmd.Parameters.AddWithValue("@ID1", new TransactionService().GenerateRandomNumbers());
-                cmd.Parameters.AddWithValue("@Amount1", money);
-                cmd.Parameters.AddWithValue("@Code1", recipientCode);
-                cmd.Parameters.AddWithValue("@SenderCode1", senderCode);
-                cmd.Parameters.AddWithValue("@ReceiverCode1", recipientCode);
-                cmd.Parameters.AddWithValue("@Type1", 3);
-                cmd.Parameters.AddWithValue("@Message1", $"{message}");
-                cmd.Parameters.AddWithValue("@CreateAt1", DateTime.Now);
-                cmd.Parameters.AddWithValue("@UpdateAt1", DateTime.Now);
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Chuyển khoản thành công\n");
                 transaction.Commit();
@@ -218,14 +199,14 @@ namespace SpringHeroBank2.model
         }
 
 
-        public List<Transaction> TransactionHistory(string senderCode)
+        public List<Transaction> TransactionHistory(string code)
         {
             var transactionHistories = new List<Transaction>();
             var connection = _connectionHelper.Connection();
             var cmd = new MySqlCommand() {Connection = connection};
             try
             {
-                cmd.CommandText = $"SELECT * from transactionhistory where Code = '{senderCode}'";
+                cmd.CommandText = $"SELECT * from transactionhistory where SenderCode = '{code}' or ReceiverCode = '{code}'";
                 var result = cmd.ExecuteReader();
                 if (result.HasRows)
                 {
