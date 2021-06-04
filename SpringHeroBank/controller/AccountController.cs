@@ -9,16 +9,15 @@ namespace SpringHeroBank2.controller
 {
     public class AccountController
     {
-        private TransactionModel _transactionModel = new TransactionModel();
         private TransactionService _transactionService = new TransactionService();
 
         public Account Recharge(Account account)
         {
             Console.WriteLine("\nNhập vào số tiền bạn muốn nạp :");
-            var money = double.Parse(Console.ReadLine());
-            if (money <= 0)
+            var amount = double.Parse(Console.ReadLine());
+            if (amount <= 0)
             {
-                Console.WriteLine($"\nKhông thể nạp ${money} vào ví , yêu cầu nạp tối thiểu từ $1\n");
+                Console.WriteLine($"\nKhông thể nạp ${amount} vào ví , yêu cầu nạp tối thiểu từ $1\n");
                 return account;
             }
             else
@@ -27,8 +26,8 @@ namespace SpringHeroBank2.controller
                 int choice = int.Parse(Console.ReadLine());
                 if (choice == 1)
                 {
-                    Console.WriteLine($"\nĐã nạp thành công ${money} vào tài khoản\n");
-                    return _transactionModel.Recharge(account.AccountNumber, money, money + account.Balance);
+                    Console.WriteLine($"\nĐã nạp thành công ${amount} vào tài khoản\n");
+                    return _transactionService.Recharge(account,amount);
                 }
                 else
                 {
@@ -37,13 +36,40 @@ namespace SpringHeroBank2.controller
             }
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         public Account Withdrawal(Account account)
         {
             Console.WriteLine("\nNhập vào số tiền bạn muốn rút :");
-            var money = double.Parse(Console.ReadLine());
-            if (money > account.Balance)
+            var amount = double.Parse(Console.ReadLine());
+            if (amount > account.Balance)
             {
-                Console.WriteLine($"\nKhông thể rút ${money} vì tài khoản của bạn không đủ\n");
+                Console.WriteLine($"\nKhông thể rút ${amount} vì tài khoản của bạn không đủ\n");
                 return account;
             }
             else
@@ -52,8 +78,8 @@ namespace SpringHeroBank2.controller
                 int choice = int.Parse(Console.ReadLine());
                 if (choice == 1)
                 {
-                    Console.WriteLine($"\nĐã rút thành công ${money} từ tài khoản\n");
-                    return _transactionModel.Withdrawal(account.AccountNumber, money, account.Balance - money);
+                    Console.WriteLine($"\nĐã rút thành công ${amount} từ tài khoản\n");
+                    return _transactionService.Withdrawal(account,amount);;
                 }
                 else
                 {
@@ -90,16 +116,15 @@ namespace SpringHeroBank2.controller
                     if (choice == 1)
                     {
                         Console.WriteLine("\nNhập vào số tiền bạn muốn chuyển");
-                        var money = double.Parse(Console.ReadLine());
-                        if (money > account.Balance)
+                        var amount = double.Parse(Console.ReadLine());
+                        if (amount > account.Balance)
                         {
                             Console.WriteLine("\n Tài khoản của bạn không đủ\n");
                             return account;
                         }
                         Console.WriteLine("\nNhập vào message bạn muốn gửi");
                         var mess = Console.ReadLine();
-                        return _transactionModel.Transfer(account.AccountNumber, checkAccount.AccountNumber, money,
-                            mess);
+                        return _transactionService.Transfer(account.AccountNumber, checkAccount.AccountNumber, amount, mess);
                     }
                     else
                     {
@@ -112,7 +137,7 @@ namespace SpringHeroBank2.controller
 
         public void ShowTransactionHistory(Account account)
         {
-            var transactions = _transactionModel.TransactionHistory(account.AccountNumber);
+            var transactions = _transactionService.TransactionHistory(account.AccountNumber);
             if (transactions.Count == 0)
             {
                 Console.WriteLine("\nBạn chưa có giao dịch nào\n");

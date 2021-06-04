@@ -18,7 +18,14 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1t1Y3ix05wpgtukAPHQ0jHWp5IW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -33,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1621937866189</updated>
       <workItem from="1621937869252" duration="17000" />
+      <workItem from="1622728743761" duration="2000" />
     </task>
     <servers />
   </component>

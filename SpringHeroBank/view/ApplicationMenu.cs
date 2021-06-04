@@ -63,7 +63,8 @@ namespace SpringHeroBank2.view
                     Console.WriteLine("|| Chọn 3 để chuyển tiền                        ||");
                     Console.WriteLine("|| Chọn 4 để xem lịch sử giao dịch              ||");
                     Console.WriteLine("|| Chọn 5 để xem thông tin profile              ||");
-                    Console.WriteLine("|| Chọn 6 để đăng xuất                          ||");
+                    Console.WriteLine("|| Chọn 6 để tra cứu giao dịch                  ||");
+                    Console.WriteLine("|| Chọn 7 để đăng xuất                          ||");
                     Console.WriteLine("||==============================================||\n");
                     Console.WriteLine("\nLựa chọn của bạn là");
                     choice = int.Parse(Console.ReadLine());
@@ -86,7 +87,7 @@ namespace SpringHeroBank2.view
                             case 5:
                                 accountController.ShowInformation(accountLogin);
                                 break;
-                            case 6:
+                            case 7:
                                 accountLogin = null;
                                 break;
                         }
