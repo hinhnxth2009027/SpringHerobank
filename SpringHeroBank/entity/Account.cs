@@ -24,7 +24,7 @@ namespace SpringHeroBank2.entity
         //số dư của người dùng default = 0
         public double Balance { get; set; }
 
-        //là mã số ngân hàng của người dùng bao gồm 16 chữ số được sinh ra ngẫu nhiên
+        //là mã số ngân hàng của người dùng bao gồm 16 chữ số được sinh ra ngẫu nhiên.
         public string AccountNumber { get; set; }
         public string BirthDay { get; set; }
 
